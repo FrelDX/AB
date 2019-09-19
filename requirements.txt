@@ -1,0 +1,3 @@
+kubernetes
+flask
+flask_restful
