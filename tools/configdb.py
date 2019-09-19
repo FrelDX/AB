@@ -3,9 +3,8 @@ import time
 import kubernetes.client
 from kubernetes.client.rest import ApiException
 from pprint import pprint
-import urllib3
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 import json
+from tools.getconfig import K8sApi
 template = """{'apiVersion': '{{api}}',
   'kind': 'Service',
   'metadata':
@@ -17,21 +16,14 @@ template = """{'apiVersion': '{{api}}',
      'selector': { 'app': 'bxg-cms' },
      'sessionAffinity': 'None',
      'type': 'NodePort' } }"""
-
 class configMap():
     def __init__(self):
         """
         k8s api地址后期需要动态获取
         """
-        self.K8sApi={
-            ####k8sapi调用地址
-            "test":{"address":"https://k8sapi:6443",
-                    "token":"eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi10b2tlbi04NXd4YiIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJhZG1pbiIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjA0YjlhYzFkLWJmMTEtMTFlOS1iZjIyLWFjMWY2YmQ2ZDk4ZSIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlLXN5c3RlbTphZG1pbiJ9.mX8tBopids-RjgxM30ZGnTY6zTVes8eAxgI_51lTh7lgLfzLQIeHPuaBNKb9DJhsPIloVA3JlcTFEGYcYuU_sUJg9jGLgIeviXN4g4oNNXuNnFDIc0FtRvf7xe4zwNAUxCEwfSHRVAADbWWcUutBQLWVk2HIGQ1-Sj3UxdgqfnCgxFd3mfi8ULanyNe2dE9DqlL7Saz-ujR3jZ5v2TTw17E7AnaoPcDhJMUaWj29Xu5j7EtDlhWJNqWCeEvYhDtB82DTZ_jwixxF7wggEgfuWb6punx8dKErltBmQXwqZmilzSPWB1Q5MNVwDQ0sIppda7kJ2CCyW7XQrA_HNeVTfg"
-                    },
-        }
         configuration = kubernetes.client.Configuration()
-        configuration.api_key['authorization'] = self.K8sApi['test']['token']
-        configuration.host = self.K8sApi['test']['address']
+        configuration.api_key['authorization'] = K8sApi['test']['token']
+        configuration.host = K8sApi['test']['address']
         configuration.verify_ssl = False
         configuration.api_key_prefix['authorization'] = 'Bearer'
         self.api_instance = kubernetes.client.CoreV1Api(kubernetes.client.ApiClient(configuration))
@@ -50,9 +42,11 @@ class configMap():
                      'name': name, } }
         try:
             api_response = self.api_instance.create_namespaced_config_map(self.namespace, body,)
+            return True
         except ApiException as e:
             print(e)
             print("存储configmap异常")
+            return False
     def getTemplate(self, name:str) ->json:
         """
         :param name: 模板名字
@@ -61,12 +55,20 @@ class configMap():
         try:
             field_selector = "metadata.name=={}".format(name)
             api_response = self.api_instance.list_namespaced_config_map(self.namespace, pretty='true',field_selector=field_selector)
+            #长度等于0表示没有这个模板
+            if len(api_response.items) ==0:
+                return None
             return api_response.items[0].data['template']
         except ApiException as e:
             print("获取configmap异常")
-            return {}
-    def deleteTemplate(self):
-        pass
+            return None
+    def deleteTemplate(self,name):
+        try:
+            api_response = self.api_instance.delete_namespaced_config_map(name, self.namespace)
+            return True
+        except ApiException as e:
+            print(e)
+            return False
     def getTemplateList(self):
         try:
             configMapList = []
@@ -81,3 +83,6 @@ class configMap():
             print("获取configmap异常")
             return {}
 configMap = configMap()
+
+
+

@@ -1,25 +1,32 @@
 # -*- coding: utf-8 -*-
 from flask_restful import Resource, reqparse, request
 from tools.configdb import configMap
+dbMap  =configMap
 class templateCreate(Resource):
     def __init__(self):
             super(templateCreate, self).__init__()
     def post(self):
-        dbMap  =configMap
         if request.form.get("name")==None or request.form.get("name") ==None:
             return {'code':'1','msg':'参数缺失'}
-        dbMap.setTemplate(request.form['name'],request.form['body'])
-        return {'code':'1','msg':'None'}
-
-
-
-
-
-
-
-
+        if dbMap.setTemplate(request.form['name'],request.form['body']):
+            return {'code':'0','msg':'None'}
+        return {'code': '1', 'msg': '创建异常'}
 class templateDelete(Resource):
     def __init__(self):
             super(templateDelete, self).__init__()
-    def post(self):
-        return 1234
+    def delete(self):
+        if request.form.get("name") == None:
+            return {'code': '1', 'msg': '参数缺失'}
+        if dbMap.deleteTemplate(request.form['name']):
+             return {'code':'0','msg':'None'}
+        return {'code': '1', 'msg': '删除异常'}
+class templateGet(Resource):
+    def __init__(self):
+            super(templateGet, self).__init__()
+    def get(self):
+        dbMap  =configMap
+        if request.form.get("name")==None or request.form.get("name") ==None:
+            return {'code':'1','msg':'参数缺失'}
+        templateList = dbMap.getTemplateList()
+        print(templateList)
+        return {'code':'0','templateList':templateList}
