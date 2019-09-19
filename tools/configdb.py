@@ -5,6 +5,7 @@ from kubernetes.client.rest import ApiException
 from pprint import pprint
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+import json
 template = """{'apiVersion': '{{api}}',
   'kind': 'Service',
   'metadata':
@@ -17,7 +18,7 @@ template = """{'apiVersion': '{{api}}',
      'sessionAffinity': 'None',
      'type': 'NodePort' } }"""
 
-class ConfigMap():
+class configMap():
     def __init__(self):
         """
         k8s api地址后期需要动态获取
@@ -34,14 +35,14 @@ class ConfigMap():
         configuration.api_key_prefix['authorization'] = 'Bearer'
         self.api_instance = kubernetes.client.CoreV1Api(kubernetes.client.ApiClient(configuration))
         self.namespace = 'kube-system'
-    def set(self,name:str,template:str) ->None:
+    def setTemplate(self,name:str,template:str) ->None:
         """
         :param name: 模板名字
         :param template:  模板内容
         :return:
         """
         body = { 'apiVersion': 'v1',
-                  'data': { 'test': template },
+                  'data': { 'template': template },
                   'kind': 'ConfigMap',
                   'metadata':
                    {
@@ -50,13 +51,31 @@ class ConfigMap():
             api_response = self.api_instance.create_namespaced_config_map(self.namespace, body,)
         except ApiException as e:
             print("存储configmap异常")
-
-    def get(self, name:str) ->str:
+    def getTemplate(self, name:str) ->json:
         """
         :param name: 模板名字
         :return:模板
         """
+        try:
+            field_selector = "metadata.name=={}".format(name)
+            api_response = self.api_instance.list_namespaced_config_map(self.namespace, pretty='true',field_selector=field_selector)
+            return api_response.items[0].data['template']
+        except ApiException as e:
+            print("获取configmap异常")
+            return {}
+    def deleteTemplate(self):
         pass
-
-s = ConfigMap()
-s.set('caojiaoyue',template)
+    def getTemplateList(self):
+        try:
+            configMapList = []
+            field_selector = "data=={}".format('template')
+            api_response = self.api_instance.list_namespaced_config_map(self.namespace, pretty='true',)
+            for i in api_response.items:
+                for k in i.data.keys():
+                    if k == 'template':
+                        configMapList.append(i.metadata.name)
+            return configMapList
+        except ApiException as e:
+            print("获取configmap异常")
+            return {}
+configMap = configMap()
