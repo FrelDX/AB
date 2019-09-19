@@ -24,7 +24,8 @@ class configMap():
         k8s api地址后期需要动态获取
         """
         self.K8sApi={
-            "test":{"address":"https://172.16.1.51:6443",
+            ####k8sapi调用地址
+            "test":{"address":"https://k8sapi:6443",
                     "token":"eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi10b2tlbi04NXd4YiIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJhZG1pbiIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjA0YjlhYzFkLWJmMTEtMTFlOS1iZjIyLWFjMWY2YmQ2ZDk4ZSIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlLXN5c3RlbTphZG1pbiJ9.mX8tBopids-RjgxM30ZGnTY6zTVes8eAxgI_51lTh7lgLfzLQIeHPuaBNKb9DJhsPIloVA3JlcTFEGYcYuU_sUJg9jGLgIeviXN4g4oNNXuNnFDIc0FtRvf7xe4zwNAUxCEwfSHRVAADbWWcUutBQLWVk2HIGQ1-Sj3UxdgqfnCgxFd3mfi8ULanyNe2dE9DqlL7Saz-ujR3jZ5v2TTw17E7AnaoPcDhJMUaWj29Xu5j7EtDlhWJNqWCeEvYhDtB82DTZ_jwixxF7wggEgfuWb6punx8dKErltBmQXwqZmilzSPWB1Q5MNVwDQ0sIppda7kJ2CCyW7XQrA_HNeVTfg"
                     },
         }
@@ -50,6 +51,7 @@ class configMap():
         try:
             api_response = self.api_instance.create_namespaced_config_map(self.namespace, body,)
         except ApiException as e:
+            print(e)
             print("存储configmap异常")
     def getTemplate(self, name:str) ->json:
         """

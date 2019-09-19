@@ -11,6 +11,13 @@ class templateCreate(Resource):
         dbMap.setTemplate(request.form['name'],request.form['body'])
         return {'code':'1','msg':'None'}
 
+
+
+
+
+
+
+
 class templateDelete(Resource):
     def __init__(self):
             super(templateDelete, self).__init__()
