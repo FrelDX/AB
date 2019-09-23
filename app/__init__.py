@@ -5,8 +5,6 @@ from app.view.template import templateCreate
 from app.view.template import templateDelete
 from app.view.template import templateGet
 from app.view.template_api import templateApi
-import urllib3
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 def createApp():
     app = Flask(__name__)
     return app

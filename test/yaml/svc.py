@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-import os, jinja2
+# import os, jinja2
 s = """
-{'apiVersion': '{{name}}',
+{'apiVersion': 'caojiaoyue',
   'kind': 'Service',
   'metadata':
    { 'labels': {'app': 'bxg-cms' },
@@ -13,7 +13,9 @@ s = """
      'sessionAffinity': 'None',
      'type': 'NodePort' } }
 """
-_t = jinja2.Template(s)
-_text = _t.render(name='曹交月')
-_text.encode('utf-8')
-print(_text)
+# _t = jinja2.Template(s)
+# _text = _t.render(name='曹交月')
+# _text.encode('utf-8')
+# print(_text)
+s = []
+print(s)

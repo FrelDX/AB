@@ -4,29 +4,14 @@ import kubernetes.client
 from kubernetes.client.rest import ApiException
 from pprint import pprint
 import json
-from tools.getconfig import K8sApi
-template = """{'apiVersion': '{{api}}',
-  'kind': 'Service',
-  'metadata':
-   { 'labels': {'app': 'bxg-cms' },
-     'name': 'bxg-cms',
-     'namespace': 'test' },
-  'spec':
-   { 'ports': [ { 'name': 'http', 'port': '8080' } ],
-     'selector': { 'app': 'bxg-cms' },
-     'sessionAffinity': 'None',
-     'type': 'NodePort' } }"""
+from tools.getconfig import kubeconfig
 class configMap():
     def __init__(self):
         """
         k8s api地址后期需要动态获取
         """
-        configuration = kubernetes.client.Configuration()
-        configuration.api_key['authorization'] = K8sApi['test']['token']
-        configuration.host = K8sApi['test']['address']
-        configuration.verify_ssl = False
-        configuration.api_key_prefix['authorization'] = 'Bearer'
-        self.api_instance = kubernetes.client.CoreV1Api(kubernetes.client.ApiClient(configuration))
+        self.configuration = kubeconfig()
+        self.api_instance = kubernetes.client.CoreV1Api(kubernetes.client.ApiClient(self.configuration))
         self.namespace = 'kube-system'
     def setTemplate(self,name:str,template:str) ->None:
         """

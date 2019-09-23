@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
+import json
 class deploy():
-    def create(self):
-        pass
-    def update(self):
-        pass
-    def delete(self):
-        pass
+    def create(body:json):
+        print(body)
+        return True
