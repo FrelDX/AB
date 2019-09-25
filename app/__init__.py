@@ -5,8 +5,11 @@ from app.view.template import templateCreate
 from app.view.template import templateDelete
 from app.view.template import templateGet
 from app.view.template_api import templateApi
+from flask import Flask, jsonify
+from flasgger import Swagger
 def createApp():
     app = Flask(__name__)
+    swagger = Swagger(app)
     return app
 App=createApp()
 def makeUrl():

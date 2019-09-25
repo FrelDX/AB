@@ -46,6 +46,8 @@ class templateApi(Resource):
             return {"code":"1","msg":"模板解析错误"}
 
 
+
+
 class pipline():
     def __init__(self,body):
         self.body = body
