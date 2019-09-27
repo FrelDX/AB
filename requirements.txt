@@ -1,3 +1,4 @@
 flask
 flask_restful
+flasgger
 kubernetes

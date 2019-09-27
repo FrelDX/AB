@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: ab
-          image: ab
-#          command: ["python", "/app/app.py", "runserver","-h","0.0.0.0"]
+          image: registry.cn-hangzhou.aliyuncs.com/caojiaoyue/ab:test
+          command: ["/bin/bash"]
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5000
@@ -30,9 +30,9 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: k8sapi
-  name: k8sapi
-  namespace: ab
+    app: ab
+  name: ab
+  namespace: kube-system
 spec:
   ports:
     - name: http
