@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ab
+  namespace: kube-system
+  labels:
+    app: ab
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: ab
+      labels:
+        app: ab
+    spec:
+      containers:
+        - name: ab
+          image: ab
+#          command: ["python", "/app/app.py", "runserver","-h","0.0.0.0"]
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: k8sapi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: k8sapi
+  name: k8sapi
+  namespace: ab
+spec:
+  ports:
+    - name: http
+      port: 5000
+  selector:
+    app: ab
+  sessionAffinity: None
+  type: NodePort
