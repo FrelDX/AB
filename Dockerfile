@@ -7,4 +7,5 @@ RUN pip3 install -r /app/requirements.txt -i https://mirrors.aliyun.com/pypi/sim
 copy nginx/nginx.conf /etc/nginx/nginx.conf
 copy . /app/
 copy entrypoint.sh /entrypoint.sh
+RUN chmod +x  /entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
