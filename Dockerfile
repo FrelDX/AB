@@ -6,4 +6,4 @@ RUN yum -y install nginx
 RUN pip3 install -r /app/requirements.txt
 copy nginx/nginx.conf /etc/nginx/nginx.conf
 copy . /app/
-CMD ["/usr/local/bin/python3", "/app/main.py","runserver"]
+CMD ["nginx && /usr/local/bin/python3", "/app/main.py","runserver"]
