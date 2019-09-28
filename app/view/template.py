@@ -45,8 +45,5 @@ class templateGet(Resource):
                   rgb: ['red', 'green', 'blue']
             """
         dbMap  =configMap
-        if request.form.get("name")==None or request.form.get("name") ==None:
-            return {'code':'1','msg':'参数缺失'}
         templateList = dbMap.getTemplateList()
-        print(templateList)
         return {'code':'0','templateList':templateList}
