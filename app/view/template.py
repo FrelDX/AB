@@ -24,6 +24,26 @@ class templateGet(Resource):
     def __init__(self):
             super(templateGet, self).__init__()
     def get(self):
+        """获取模板列表.
+            ---
+            definitions:
+              Palette:
+                type: object
+                properties:
+                  palette_name:
+                    type: array
+                    items:
+                      $ref: '#/definitions/Color'
+              Color:
+                type: string
+            responses:
+              200:
+                description: A list of colors (may be filtered by palette)
+                schema:
+                  $ref: '#/definitions/Palette'
+                examples:
+                  rgb: ['red', 'green', 'blue']
+            """
         dbMap  =configMap
         if request.form.get("name")==None or request.form.get("name") ==None:
             return {'code':'1','msg':'参数缺失'}

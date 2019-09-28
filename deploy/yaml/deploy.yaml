@@ -25,7 +25,7 @@ spec:
       restartPolicy: Always
   selector:
     matchLabels:
-      app: k8sapi
+      app: ab
 ---
 apiVersion: v1
 kind: Service
