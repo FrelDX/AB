@@ -6,4 +6,5 @@ RUN yum -y install nginx
 RUN pip3 install -r /app/requirements.txt -i https://mirrors.aliyun.com/pypi/simple
 copy nginx/nginx.conf /etc/nginx/nginx.conf
 copy . /app/
-CMD ["nginx && /usr/local/bin/python3", "/app/main.py","runserver"]
+copy entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["./entrypoint.sh"]
