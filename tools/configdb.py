@@ -66,7 +66,7 @@ class configMap():
             return configMapList
         except ApiException as e:
             logecho.info(e)
-            return {}
+            return []
 configMap = configMap()
 
 

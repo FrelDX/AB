@@ -14,9 +14,9 @@ def createApp():
 App=createApp()
 def makeUrl():
     api = Api(App)
-    api.add_resource(templateCreate, '/template/create')
-    api.add_resource(templateDelete, '/template/delete')
-    api.add_resource(templateGet, '/template/get')
+    api.add_resource(templateCreate, '/ab/template/create')
+    api.add_resource(templateDelete, '/ab/template/delete')
+    api.add_resource(templateGet, '/ab/template/get')
     #name:template name operation: create delete patch
-    api.add_resource(templateApi, '/template/api/<name>/<operaton>')
+    api.add_resource(templateApi, '/ab/template/api/<name>/<operaton>')
 makeUrl()
