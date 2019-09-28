@@ -5,6 +5,7 @@ from kubernetes.client.rest import ApiException
 from pprint import pprint
 import json
 from tools.getconfig import kubeconfig
+from tools.log import logecho
 class configMap():
     def __init__(self):
         """
@@ -29,8 +30,7 @@ class configMap():
             api_response = self.api_instance.create_namespaced_config_map(self.namespace, body,)
             return True
         except ApiException as e:
-            print(e)
-            print("存储configmap异常")
+            logecho.info(e)
             return False
     def getTemplate(self, name:str) ->json:
         """
@@ -45,14 +45,14 @@ class configMap():
                 return None
             return api_response.items[0].data['template']
         except ApiException as e:
-            print("获取configmap异常")
+            logecho.info(e)
             return None
     def deleteTemplate(self,name):
         try:
             api_response = self.api_instance.delete_namespaced_config_map(name, self.namespace)
             return True
         except ApiException as e:
-            print(e)
+            logecho.info(e)
             return False
     def getTemplateList(self):
         try:
@@ -65,7 +65,7 @@ class configMap():
                         configMapList.append(i.metadata.name)
             return configMapList
         except ApiException as e:
-            print("获取configmap异常")
+            logecho.info(e)
             return {}
 configMap = configMap()
 

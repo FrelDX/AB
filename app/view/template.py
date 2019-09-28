@@ -47,3 +47,10 @@ class templateGet(Resource):
         dbMap  =configMap
         templateList = dbMap.getTemplateList()
         return {'code':'0','templateList':templateList}
+    def post(self):
+        dbMap = configMap
+        templateList = dbMap.getTemplate()
+        if templateList is None:
+            return {'code': '1', 'msg': "没有找到模板"}
+        return {'code': '0', 'templateList': templateList}
+
