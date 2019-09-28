@@ -6,7 +6,7 @@ class templateCreate(Resource):
     def __init__(self):
             super(templateCreate, self).__init__()
     def post(self):
-        if request.form.get("name")==None or request.form.get("name") ==None:
+        if request.form.get("name")==None or request.form.get("body") ==None:
             return {'code':'1','msg':'参数缺失'}
         if dbMap.setTemplate(request.form['name'],request.form['body']):
             return {'code':'0','msg':'None'}
@@ -49,7 +49,9 @@ class templateGet(Resource):
         return {'code':'0','templateList':templateList}
     def post(self):
         dbMap = configMap
-        templateList = dbMap.getTemplate()
+        if request.form.get("name")==None:
+            return {'code':'1','msg':'参数缺失'}
+        templateList = dbMap.getTemplate(request.form.get("name"))
         if templateList is None:
             return {'code': '1', 'msg': "没有找到模板"}
         return {'code': '0', 'templateList': templateList}
