@@ -6,4 +6,7 @@ class MutatingWebhookConfiguration(Resource):
     def __init__(self):
             super(MutatingWebhookConfiguration, self).__init__()
     def post(self):
+        print('+_____________________________')
+        print(request.data)
         print( request.form)
+        print('+_____________________________')
