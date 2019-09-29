@@ -8,5 +8,8 @@ class MutatingWebhookConfiguration(Resource):
     def post(self):
         print('+_____________________________')
         print(request.data)
+        print('+_____________________________')
         print( request.form)
+        print('+_____________________________')
+        print('+_____________________________')
         print('+_____________________________')
