@@ -12,9 +12,19 @@ class MutatingWebhookConfiguration(Resource):
         super(MutatingWebhookConfiguration, self).__init__()
     def post(self):
         data = request.data
-        j_data = json.loads(data)
+        j_data = request.get_json()
+        logecho.info(j_data)
         for i in j_data.keys():
             logecho.info(i)
         logecho.info(j_data["request"]["uid"])
         logecho.info(j_data["request"]["object"])
-
+        data = request.get_json()
+        s = {
+        "apiVersion": "admission.k8s.io/v1beta1",
+        "kind": "AdmissionReview",
+        "response": {
+        "uid": data['request']['uid'],
+        "allowed": True,
+        "patchType": "JSONPatch",
+        "patch": "W3sib3AiOiAiYWRkIiwgInBhdGgiOiAiL3NwZWMvcmVwbGljYXMiLCAidmFsdWUiOiAzfV0="
+         }}
