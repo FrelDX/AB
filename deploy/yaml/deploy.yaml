@@ -31,13 +31,35 @@ kind: Service
 metadata:
   labels:
     app: ab
-  name: ab
+  name: ab-svc
   namespace: kube-system
 spec:
   ports:
     - name: http
       port: 80
+    - name：https
+      port: 443
   selector:
     app: ab
   sessionAffinity: None
   type: NodePort
+---
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: sidecar-injector-webhook-cfg
+  labels:
+    app: sidecar-injector
+webhooks:
+  - name: sidecar-injector.morven.me
+    clientConfig:
+      service:
+        namespace: "example-namespace"
+        name: "example-service"
+        path: /my-path
+    rules:
+      - operations: ["CREATE","UPDATE"]
+        apiGroups: ["apps"]
+        apiVersions: ["v1","v1beta1"]
+        resources: ["deployments", "replicasets"]
+        scope: "Namespaced"

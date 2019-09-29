@@ -54,5 +54,5 @@ class templateGet(Resource):
         templateList = dbMap.getTemplate(request.form.get("name"))
         if templateList is None:
             return {'code': '1', 'msg': "没有找到模板"}
-        return {'code': '0', 'templateList': templateList}
+        return {'code': '0', 'template': templateList}
 

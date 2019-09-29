@@ -7,6 +7,7 @@ from app.view.template import templateGet
 from app.view.template_api import templateApi
 from flask import Flask, jsonify
 from flasgger import Swagger
+from app.view.Mutating import MutatingWebhookConfiguration
 def createApp():
     app = Flask(__name__)
     swagger = Swagger(app)
@@ -19,4 +20,5 @@ def makeUrl():
     api.add_resource(templateGet, '/ab/template/get')
     #name:template name operation: create delete patch
     api.add_resource(templateApi, '/ab/template/api/<name>/<operaton>')
+    api.add_resource(MutatingWebhookConfiguration, '/ab/webhook')
 makeUrl()

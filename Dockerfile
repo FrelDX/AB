@@ -5,6 +5,7 @@ RUN rpm -ivh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos
 RUN yum -y install nginx
 RUN pip3 install -r /app/requirements.txt -i https://mirrors.aliyun.com/pypi/simple
 copy nginx/nginx.conf /etc/nginx/nginx.conf
+copy nginx/ssl        /etc/nginx/ssl
 copy . /app/
 copy entrypoint.sh /entrypoint.sh
 RUN chmod +x  /entrypoint.sh
