@@ -45,6 +45,8 @@ class pipline():
         namespace = self.body["request"]["namespace"]
         template = None
         name = self.body["request"]["object"]["metadata"]["name"]
+        logecho.info(namespace)
+        logecho.info(name)
         if rule.get("name") == name or rule.get("namespace") == namespace:
             templateName = rule.get("template")
             template = self.getInto(templateName)
@@ -59,13 +61,7 @@ class pipline():
         logecho.info(sourceBody)
         logecho.info('___________用户注入体_____________________')
         # 需要注入的containers
-        try:
-            intoBody = self.filtration()
-            if intoBody == None:
-                return None
-        except Exception as e:
-            logecho.info(e)
-            return None
+        intoBody = self.filtration()
         logecho.info(intoBody)
         logecho.info('___________需要注入体_____________________')
         # 最终注入体
