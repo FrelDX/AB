@@ -41,9 +41,7 @@ class pipline():
         """
         :return:  根据注入条件匹配注入的body，返回注入的jsonpath。和需要注入的模板名字。
         """
-        rule = {"name": "caojiaoyue", "template": "caojiaoyue"},
-
-
+        rule = {"name": "caojiaoyue", "template": "caojiaoyue"}
         namespace = self.body["request"]["namespace"]
         template = None
         name = self.body["request"]["object"]["metadata"]["name"]
