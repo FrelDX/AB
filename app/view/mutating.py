@@ -31,15 +31,11 @@ class pipline():
     def __init__(self, body: json):
         self.body = body
         logecho.info(self.body)
-
-    @classmethod
     def getInto(self) -> list:
         """
         :return:  获取注入的body
         """
         return [{'name': 'nginx', 'image': 'nginx', 'imagePullPolicy': 'Always'}]
-
-    @classmethod
     def filtration(self):
         """
         :return:  根据注入条件匹配注入的body，返回注入的jsonpath。和需要注入的模板名字。
@@ -60,7 +56,9 @@ class pipline():
         """
         try:
             self.filtration()
+            logecho.info('1111111111111111111111111111')
         except Exception as e:
+            logecho.info('22222222222222222222222222222')
             logecho.info(e)
         # 用户自定义的containers
         sourceBody = self.body["request"]["object"]["spec"]["template"]["spec"]["containers"]
