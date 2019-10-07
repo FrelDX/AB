@@ -34,7 +34,7 @@ class pipline():
     def __init__(self,body:json):
         self.body = body
     @classmethod
-    def getInto(self) ->list:
+    def getInto(self, name) -> list:
         """
         :return:  获取注入的body
         """
@@ -45,6 +45,13 @@ class pipline():
         """
         :return:  根据注入条件匹配注入的body，返回注入的jsonpath。和需要注入的模板名字。
         """
+        rule = [
+
+            {"name": "caojiaoyue", "template": "caojiaoyue"},
+            {"namespace": "test", "template": "caojiaoyue"},
+
+        ]
+        logecho.info(self.body)
 
 
     def toInto(self):
@@ -52,6 +59,7 @@ class pipline():
         :return: 注入
         """
         #用户自定义的containers
+        self.filtration()
         sourceBody = self.body["request"]["object"]["spec"]["template"]["spec"]["containers"]
         logecho.info(sourceBody)
         #需要注入的containers
@@ -68,7 +76,6 @@ class pipline():
         body = base64.b64encode(jsonpath.encode('utf8'))
         body = str(body, encoding='utf8')
         return body
-
 
 
 
