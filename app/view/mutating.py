@@ -36,25 +36,20 @@ class pipline():
         """
         :return:  获取注入的body
         """
-        return [{'name': 'nginx', 'image': 'nginx', 'imagePullPolicy': 'Always'}]
+        return {'name': 'nginx', 'image': 'nginx', 'imagePullPolicy': 'Always'}
     def filtration(self):
         """
         :return:  根据注入条件匹配注入的body，返回注入的jsonpath。和需要注入的模板名字。
         """
-        rule = [
+        rule = {"name": "caojiaoyue", "template": "caojiaoyue"},
 
-            {"name": "caojiaoyue", "template": "caojiaoyue"},
-            {"namespace": "test", "template": "caojiaoyue"},
 
-        ]
         namespace = self.body["request"]["namespace"]
         name = self.body["request"]["object"]["metadata"]["name"]
-        for i in rule:
-            if i.get("name") == name or i.get("namespace") == namespace:
-                templateName = i.get("template")
-                template = self.getInto(templateName)
-                return template
-            return None
+        if rule.get("name") == name or rule.get("namespace") == namespace:
+            templateName = rule.get("template")
+            template = self.getInto(templateName)
+        return template
     def toInto(self):
         """
         :return: 注入
@@ -72,8 +67,8 @@ class pipline():
             return None
         logecho.info(intoBody)
         # 最终注入体
-        for i in intoBody:
-            sourceBody.append(i)
+        sourceBody.append(intoBody)
+        logecho.info(sourceBody)
         jsonpath = [
             {"op": "replace", "path": "/spec/template/spec/containers", "value": sourceBody}
         ]
