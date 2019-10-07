@@ -66,5 +66,5 @@ webhooks:
       - operations: ["CREATE","UPDATE"]
         apiGroups: ["apps"]
         apiVersions: ["v1","v1beta1"]
-        resources: ["deployments", "replicasets"]
+        resources: ["deployments",]
         scope: "Namespaced"
