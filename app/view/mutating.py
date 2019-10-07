@@ -58,7 +58,10 @@ class pipline():
         """
         :return: 注入
         """
-        self.filtration()
+        try:
+            self.filtration()
+        except Exception as e:
+            logecho.info(e)
         # 用户自定义的containers
         sourceBody = self.body["request"]["object"]["spec"]["template"]["spec"]["containers"]
         logecho.info(sourceBody)
