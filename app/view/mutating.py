@@ -60,7 +60,13 @@ class pipline():
         logecho.info(sourceBody)
         logecho.info('___________用户注入体_____________________')
         # 需要注入的containers
-        needInto = self.filtration()
+        try:
+            needInto = self.filtration()
+            if needInto == None:
+                return None
+        except Exception as e:
+            logecho.info(e)
+            return None
         logecho.info(needInto)
         logecho.info('___________需要注入体_____________________')
         # 最终注入体
@@ -70,7 +76,7 @@ class pipline():
         logecho.info(into)
         logecho.info('___________最终注入体_____________________')
         jsonpath = [
-            {"op": "replace", "path": "/spec/template/spec/containers", "value": sourceBody}
+            {"op": "replace", "path": "/spec/template/spec/containers", "value": into}
         ]
         jsonpath = json.dumps(jsonpath)
         logecho.info(jsonpath)
