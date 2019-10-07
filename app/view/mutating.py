@@ -33,6 +33,7 @@ class MutatingWebhookConfiguration(Resource):
 class pipline():
     def __init__(self,body:json):
         self.body = body
+        logecho.info(self.body)
     @classmethod
     def getInto(self, name) -> list:
         """
@@ -51,7 +52,6 @@ class pipline():
             {"namespace": "test", "template": "caojiaoyue"},
 
         ]
-        logecho.info(self.body)
 
 
     def toInto(self):
@@ -59,7 +59,6 @@ class pipline():
         :return: 注入
         """
         #用户自定义的containers
-        self.filtration()
         sourceBody = self.body["request"]["object"]["spec"]["template"]["spec"]["containers"]
         logecho.info(sourceBody)
         #需要注入的containers
