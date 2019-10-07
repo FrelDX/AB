@@ -56,6 +56,9 @@ class pipline():
         logecho.info(intoBody)
         #最终注入体
         newInto = sourceBody.append(intoBody)
+        logecho.info("----------------------")
+        logecho.info(newInto)
+        logecho.info("----------------------")
         jsonpath = [
             {"op": "replace", "path": "/spec/template/spec/containers", "value": newInto}
         ]
