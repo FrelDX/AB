@@ -45,6 +45,7 @@ class pipline():
 
 
         namespace = self.body["request"]["namespace"]
+        template = None
         name = self.body["request"]["object"]["metadata"]["name"]
         if rule.get("name") == name or rule.get("namespace") == namespace:
             templateName = rule.get("template")
