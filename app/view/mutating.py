@@ -34,11 +34,11 @@ class pipline():
     def __init__(self,body:json):
         self.body = body
     @classmethod
-    def getInto(self):
+    def getInto(self) ->list:
         """
         :return:  获取注入的body
         """
-        return {'name': 'nginx', 'image': 'nginx:1.12.2', 'imagePullPolicy': 'Always'}
+        return [{'name': 'nginx', 'image': 'nginx:1.12.2', 'imagePullPolicy': 'Always'}]
     @classmethod
     def filtration(self):
         """
@@ -55,12 +55,10 @@ class pipline():
         intoBody = self.getInto()
         logecho.info(intoBody)
         #最终注入体
-        newInto = sourceBody.append(intoBody)
-        logecho.info("----------------------")
-        logecho.info(newInto)
-        logecho.info("----------------------")
+        for i in intoBody:
+            sourceBody.append(i)
         jsonpath = [
-            {"op": "replace", "path": "/spec/template/spec/containers", "value": newInto}
+            {"op": "replace", "path": "/spec/template/spec/containers", "value": sourceBody}
         ]
         jsonpath = json.dumps(jsonpath)
         logecho.info(jsonpath)
