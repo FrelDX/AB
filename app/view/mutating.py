@@ -38,7 +38,8 @@ class pipline():
         """
         :return:  获取注入的body
         """
-        return [{'name': 'nginx', 'image': 'nginx:1.12.2', 'imagePullPolicy': 'Always'}]
+        return [{'name': 'nginx', 'image': 'nginx', 'imagePullPolicy': 'Always'}]
+
     @classmethod
     def filtration(self):
         """
