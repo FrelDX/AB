@@ -58,13 +58,7 @@ class pipline():
         """
         :return: 注入
         """
-        try:
-            namespace = self.body["request"]["namespace"]
-            name = self.body["request"]["object"]["metadata"]["name"]
-            logecho.info(name)
-            logecho.info(namespace)
-        except:
-            logecho.info("报错了")
+        self.filtration()
         # 用户自定义的containers
         sourceBody = self.body["request"]["object"]["spec"]["template"]["spec"]["containers"]
         logecho.info(sourceBody)
