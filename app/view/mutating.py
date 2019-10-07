@@ -8,6 +8,9 @@ import base64
 dbMap = configMap
 
 
+
+
+
 class MutatingWebhookConfiguration(Resource):
     def __init__(self):
         super(MutatingWebhookConfiguration, self).__init__()
@@ -30,29 +33,34 @@ class MutatingWebhookConfiguration(Resource):
 class pipline():
     def __init__(self,body:json):
         self.body = body
+    @classmethod
     def getInto(self):
         """
         :return:  获取注入的body
         """
         return {'name': 'nginx', 'image': 'nginx:1.12.2', 'imagePullPolicy': 'Always'}
+    @classmethod
     def filtration(self):
         """
-        :return:  根据注入条件匹配注入的body
+        :return:  根据注入条件匹配注入的body，返回注入的jsonpath。和需要注入的模板名字。
         """
     def toInto(self):
         """
         :return: 注入
         """
-        ###用户自定义的containers
+        #用户自定义的containers
         sourceBody = self.body["request"]["object"]["spec"]["template"]["spec"]["containers"]
-        ###需要注入的containers
+        logecho.info(sourceBody)
+        #需要注入的containers
         intoBody = self.getInto()
+        logecho.info(intoBody)
         #最终注入体
         newInto = sourceBody.append(intoBody)
         jsonpath = [
             {"op": "replace", "path": "/spec/template/spec/containers", "value": newInto}
         ]
         jsonpath = json.dumps(jsonpath)
+        logecho.info(jsonpath)
         body = base64.b64encode(jsonpath.encode('utf8'))
         body = str(body, encoding='utf8')
         return body
@@ -66,4 +74,17 @@ class pipline():
 
 
 
+
+
+
+
+{"name":"*","into":"模板","type":"container"}
+
+
+
+{"namespace":"caojiaoyue","into":"模板","type":"configmap"}
+
+
+
+{"labels":{"app":123},"into":"模板","type":"configmap"}
 
