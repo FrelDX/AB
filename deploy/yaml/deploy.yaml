@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: ab
-          image: registry.cn-hangzhou.aliyuncs.com/caojiaoyue/ab:test10
+          image: yourimages
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
