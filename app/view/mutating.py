@@ -59,6 +59,7 @@ class pipline():
         """
         :return: 注入
         """
+
         #用户自定义的containers
         self.filtration()
         sourceBody = self.body["request"]["object"]["spec"]["template"]["spec"]["containers"]
