@@ -15,23 +15,24 @@ class MutatingWebhookConfiguration(Resource):
     def post(self):
         j_data = request.get_json()
         process = pipline(j_data)
-        body = {
-            "apiVersion": "admission.k8s.io/v1beta1",
-            "kind": "AdmissionReview",
-            "response": {
-                "uid": j_data['request']['uid'],
-                "allowed": True,
-                "patchType": "JSONPatch",
-                "patch": process.toInto()
-            }}
-        return body
-
-
+        path = process.toInto()
+        if path != None:
+            body = {
+                "apiVersion": "admission.k8s.io/v1beta1",
+                "kind": "AdmissionReview",
+                "response": {
+                    "uid": j_data['request']['uid'],
+                    "allowed": True,
+                    "patchType": "JSONPatch",
+                    "patch": process.toInto()
+                }}
+            return body
 class pipline():
     def __init__(self, body: json):
         self.body = body
         logecho.info(self.body)
-    def getInto(self) -> list:
+
+    def getInto(self, templateName) -> list:
         """
         :return:  获取注入的body
         """
@@ -48,23 +49,27 @@ class pipline():
         ]
         namespace = self.body["request"]["namespace"]
         name = self.body["request"]["object"]["metadata"]["name"]
-        logecho.info(name)
-        logecho.info(namespace)
+        for i in rule:
+            if i.get("name") == name or i.get("namespace") == namespace:
+                templateName = i.get("template")
+                template = self.getInto(templateName)
+                return template
+            return None
     def toInto(self):
         """
         :return: 注入
         """
-        try:
-            self.filtration()
-            logecho.info('1111111111111111111111111111')
-        except Exception as e:
-            logecho.info('22222222222222222222222222222')
-            logecho.info(e)
         # 用户自定义的containers
         sourceBody = self.body["request"]["object"]["spec"]["template"]["spec"]["containers"]
         logecho.info(sourceBody)
         # 需要注入的containers
-        intoBody = self.getInto()
+        try:
+            intoBody = self.filtration()
+            if intoBody == None:
+                return None
+        except Exception as e:
+            logecho.info(e)
+            return None
         logecho.info(intoBody)
         # 最终注入体
         for i in intoBody:
