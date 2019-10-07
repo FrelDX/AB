@@ -54,6 +54,7 @@ class pipline():
         :return: 注入
         """
         # 用户自定义的containers
+        logecho.info(self.body)
         sourceBody = self.body["request"]["object"]["spec"]["template"]["spec"]["containers"]
         logecho.info(sourceBody)
         logecho.info('___________用户注入体_____________________')
