@@ -35,7 +35,7 @@ class pipline():
         self.body = body
         logecho.info(self.body)
     @classmethod
-    def getInto(self, name) -> list:
+    def getInto(self) -> list:
         """
         :return:  获取注入的body
         """
@@ -52,7 +52,8 @@ class pipline():
             {"namespace": "test", "template": "caojiaoyue"},
 
         ]
-
+        logecho.info(self.body["request"]["namespace"])
+        logecho.info(self.body["request"]["object"]["metadata"]["name"])
 
     def toInto(self):
         """
