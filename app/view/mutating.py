@@ -23,8 +23,7 @@ class MutatingWebhookConfiguration(Resource):
         logecho.info("-----------------into-------------")
         logecho.info(into)
         logecho.info("-----------------into-------------")
-        intobody = {'name': 'nginx', 'image': 'nginx', 'resources': {}, 'terminationMessagePath': '/dev/termination-log',
-          'terminationMessagePolicy': 'File', 'imagePullPolicy': 'Always'}
+        intobody = {'name': 'nginx', 'image': 'nginx', 'imagePullPolicy': 'Always'}
         into .append(intobody)
         logecho.info("-----------------into add -------------")
         logecho.info(into)
