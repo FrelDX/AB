@@ -30,8 +30,6 @@ class MutatingWebhookConfiguration(Resource):
 class pipline():
     def __init__(self, body: json):
         self.body = body
-        logecho.info(self.body)
-
     def getInto(self, templateName) -> list:
         """
         :return:  获取注入的body
