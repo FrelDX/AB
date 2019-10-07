@@ -56,6 +56,7 @@ class pipline():
         # 用户自定义的containers
         sourceBody = self.body["request"]["object"]["spec"]["template"]["spec"]["containers"]
         logecho.info(sourceBody)
+        logecho.info('___________用户注入体_____________________')
         # 需要注入的containers
         try:
             intoBody = self.filtration()
@@ -65,9 +66,11 @@ class pipline():
             logecho.info(e)
             return None
         logecho.info(intoBody)
+        logecho.info('___________需要注入体_____________________')
         # 最终注入体
         sourceBody.append(intoBody)
         logecho.info(sourceBody)
+        logecho.info('___________最终注入体_____________________')
         jsonpath = [
             {"op": "replace", "path": "/spec/template/spec/containers", "value": sourceBody}
         ]
