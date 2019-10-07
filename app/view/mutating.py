@@ -19,12 +19,16 @@ class MutatingWebhookConfiguration(Resource):
         logecho.info(j_data["request"]["uid"])
         logecho.info(j_data["request"]["object"])
 
-        #into = j_data["request"]["object"]["spec"]["template"]["spec"]["containers"]
-        into = []
+        into = j_data["request"]["object"]["spec"]["template"]["spec"]["containers"]
+        logecho.info("-----------------into-------------")
+        logecho.info(into)
+        logecho.info("-----------------into-------------")
         intobody = {'name': 'nginx', 'image': 'nginx', 'resources': {}, 'terminationMessagePath': '/dev/termination-log',
           'terminationMessagePolicy': 'File', 'imagePullPolicy': 'Always'}
         into .append(intobody)
+        logecho.info("-----------------into add -------------")
         logecho.info(into)
+        logecho.info("-----------------into add -------------")
         jsonpath = [
             {"op": "replace", "path": "/spec/template/spec/containers", "value": into}
         ]
