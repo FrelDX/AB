@@ -21,6 +21,7 @@ class MutatingWebhookConfiguration(Resource):
                 "apiVersion": "admission.k8s.io/v1beta1",
                 "kind": "AdmissionReview",
                 "response": {
+                    # 回调uid
                     "uid": j_data['request']['uid'],
                     "allowed": True,
                     "patchType": "JSONPatch",
@@ -43,7 +44,7 @@ class pipline():
         }
         self.sourceBody = self.body["request"]["object"]["spec"]["template"]["spec"]["containers"]
 
-    def getInto(self, templateName) -> dict:
+    def getInto(self, templateName: str) -> dict:
         """
         :return:  获取注入的body
         """
@@ -54,9 +55,10 @@ class pipline():
         if templateName in template.keys():
             return template[templateName]
         return None
-    def filtration(self):
+
+    def filtration(self) -> list:
         """
-        :return:  根据注入条件匹配注入的body，返回注入的jsonpath。和需要注入的模板名字。
+        :return:  根据注入条件匹配注入的body。
         """
         intoBody = []
         rule = {
@@ -73,7 +75,9 @@ class pipline():
                 if template == None:
                     continue
                 intoBody.append(template)
+                break
         logecho.info(intoBody)
+        return intoBody
     def toInto(self):
         """
         :return: 注入
@@ -87,11 +91,10 @@ class pipline():
         except Exception as e:
             logecho.info(e)
             return None
-        logecho.info(needInto)
-        # 最终注入体
         for i in self.sourceBody:
             into.append(i)
-        into.append(needInto)
+        for i in needInto:
+            into.append(i)
         logecho.info(into)
         jsonpath = [
             {"op": "replace", "path": "/spec/template/spec/containers", "value": into}
