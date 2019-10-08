@@ -134,3 +134,4 @@ class Rule():
 Rule = Rule()
 Rule.set({"name": "aliyun", "template": "nginx"}, "containers")
 s = Rule.get()
+print(s)

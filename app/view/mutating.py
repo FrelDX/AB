@@ -4,8 +4,6 @@ from tools.configdb import configMap, Rule
 from tools.log import logecho
 import base64
 import json
-
-Rule = Rule()
 class MutatingWebhookConfiguration(Resource):
     def __init__(self):
         super(MutatingWebhookConfiguration, self).__init__()
