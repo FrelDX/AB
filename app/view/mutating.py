@@ -56,11 +56,12 @@ class pipline():
             return template[templateName]
         return None
 
-    def filtration(self) -> list:
+    def filtration(self) -> dict:
         """
         :return:  根据注入条件匹配注入的body。
         """
         intoBody = []
+        Body = {}
         rule = {
             "containers": [{"name": "caojiaoyue", "template": "nginx"}, {"name": "caojiaoyue1", "template": "tomcat"}],
             "volumes": [{"name": "caojiaoyue", "template": "tomcat"}],
@@ -75,9 +76,9 @@ class pipline():
                 if template == None:
                     continue
                 intoBody.append(template)
+                Body["containers"] = intoBody
                 break
-        logecho.info(intoBody)
-        return intoBody
+        return Body
     def toInto(self):
         """
         :return: 注入
@@ -93,12 +94,15 @@ class pipline():
             return None
         for i in self.sourceBody:
             into.append(i)
-        for i in needInto:
-            into.append(i)
+        for i in needInto.keys():
+            if i == "containers":
+                for i in needInto:
+                    into.append(i)
+                containersPath = self.intoPath["containers"]
+                containersPath["value"] = into
+                jsonpath = [].append(containersPath)
         logecho.info(into)
-        jsonpath = [
-            {"op": "replace", "path": "/spec/template/spec/containers", "value": into}
-        ]
+        logecho.info(jsonpath)
         jsonpath = json.dumps(jsonpath)
         logecho.info(jsonpath)
         body = base64.b64encode(jsonpath.encode('utf8'))
