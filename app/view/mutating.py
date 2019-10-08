@@ -94,12 +94,13 @@ class pipline():
         except Exception as e:
             logecho.info(e)
             return None
+
         for i in self.sourceBody:
             into.append(i)
         for i in needInto.keys():
             if i == "containers":
-                for i in needInto:
-                    into.append(i)
+                for containers in i:
+                    into.append(containers)
                 containersPath = self.intoPath["containers"]
                 containersPath["value"] = into
                 logecho.info(containersPath)
