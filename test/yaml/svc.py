@@ -1,4 +1,1 @@
-rule = [{'name': 'caojiaoyue', 'image': 'tomcat', 'resources': {}, 'terminationMessagePath': '/dev/termination-log',
-         'terminationMessagePolicy': 'File', 'imagePullPolicy': 'Always'},
-        {'name': 'nginx', 'image': 'nginx', 'imagePullPolicy': 'Always'},
-        {'name': 'nginx', 'image': 'nginx', 'imagePullPolicy': 'Always'}]
+s = {"volumes": [{"hostPath": {"path": "/data/es", "type": ""}, "name": "data"}, ]}

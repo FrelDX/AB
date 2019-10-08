@@ -24,42 +24,62 @@ class MutatingWebhookConfiguration(Resource):
                     "uid": j_data['request']['uid'],
                     "allowed": True,
                     "patchType": "JSONPatch",
-                    "patch": process.toInto()
+                    "patch": path
                 }}
             return body
+
+
 class pipline():
     def __init__(self, body: json):
         self.body = body
-    def getInto(self, templateName) -> list:
+        # 命名空间
+        self.namespace = self.body["request"]["namespace"]
+        self.template = None
+        # deploy名字
+        self.name = self.body["request"]["object"]["metadata"]["name"]
+        self.intoPath = {
+            "containers": {"op": "replace", "path": "/spec/template/spec/containers", "value": None},
+            "volumes": {"op": "replace", "path": "/spec/template/spec/volumes", "value": None},
+        }
+        self.sourceBody = self.body["request"]["object"]["spec"]["template"]["spec"]["containers"]
+
+    def getInto(self, templateName) -> dict:
         """
         :return:  获取注入的body
         """
-        return {'name': 'nginx', 'image': 'nginx', 'imagePullPolicy': 'Always'}
+        template = {
+            "nginx": {'name': 'nginx', 'image': 'nginx', 'imagePullPolicy': 'Always'},
+            "tomcat": {'name': 'tomcat', 'image': 'tomcat', 'imagePullPolicy': 'Always'}
+        }
+        if templateName in template.keys():
+            return template[templateName]
+        return None
     def filtration(self):
         """
         :return:  根据注入条件匹配注入的body，返回注入的jsonpath。和需要注入的模板名字。
         """
-        rule = {"name": "caojiaoyue", "template": "caojiaoyue"}
-        namespace = self.body["request"]["namespace"]
-        template = None
-        name = self.body["request"]["object"]["metadata"]["name"]
-        logecho.info(namespace)
-        logecho.info(name)
-        if rule.get("name") == name or rule.get("namespace") == namespace:
-            templateName = rule.get("template")
-            template = self.getInto(templateName)
-        return template
+        intoBody = []
+        rule = {
+            "containers": [{"name": "caojiaoyue", "template": "nginx"}, {"name": "caojiaoyue1", "template": "tomcat"}],
+            "volumes": [{"name": "caojiaoyue", "template": "tomcat"}],
+        }
+        logecho.info(self.namespace)
+        logecho.info(self.name)
+        ###先判断容器注入
+        for i in rule["containers"]:
+            #
+            if i.get("name") == self.name or i.get("namespace") == self.namespace:
+                template = self.getInto(i.get("template"))
+                if template == None:
+                    continue
+                intoBody.append(template)
+        logecho.info(intoBody)
     def toInto(self):
         """
         :return: 注入
         """
-        # 用户自定义的containers
-        into = []
-        logecho.info(self.body)
-        sourceBody = self.body["request"]["object"]["spec"]["template"]["spec"]["containers"]
-        logecho.info(sourceBody)
-        logecho.info('___________用户注入体_____________________')
         # 需要注入的containers
+        into = []
         try:
             needInto = self.filtration()
             if needInto == None:
@@ -68,13 +88,11 @@ class pipline():
             logecho.info(e)
             return None
         logecho.info(needInto)
-        logecho.info('___________需要注入体_____________________')
         # 最终注入体
-        for i in sourceBody:
+        for i in self.sourceBody:
             into.append(i)
         into.append(needInto)
         logecho.info(into)
-        logecho.info('___________最终注入体_____________________')
         jsonpath = [
             {"op": "replace", "path": "/spec/template/spec/containers", "value": into}
         ]
