@@ -63,7 +63,8 @@ class pipline():
         intoBody = []
         Body = {}
         rule = {
-            "containers": [{"name": "caojiaoyue", "template": "nginx"}, {"name": "caojiaoyue1", "template": "tomcat"}],
+            "containers": [{"name": "caojiaoyue", "template": "nginx"}, {"name": "caojiaoyue1", "template": "tomcat"},
+                           {"namespace": "test", "template": "tomcat"}],
             "volumes": [{"name": "caojiaoyue", "template": "tomcat"}],
         }
         logecho.info(self.namespace)
@@ -104,9 +105,6 @@ class pipline():
             containersPath["value"] = into
             logecho.info(containersPath)
             jsonpath.append(containersPath)
-
-        logecho.info(jsonpath)
-        logecho.info(into)
         logecho.info(jsonpath)
         jsonpath = json.dumps(jsonpath)
         logecho.info(jsonpath)
