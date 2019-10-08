@@ -67,7 +67,70 @@ class configMap():
         except ApiException as e:
             logecho.info(e)
             return []
-configMap = configMap()
 
 
+class Rule():
+    def __init__(self):
+        self.configuration = kubeconfig()
+        self.api_instance = kubernetes.client.CoreV1Api(kubernetes.client.ApiClient(self.configuration))
+        self.namespace = 'kube-system'
+        # comfigmap的名字
+        self.ruleName = 'rule'
+        self.body = {'apiVersion': 'v1',
+                     'data': {},
+                     'kind': 'ConfigMap',
+                     'metadata':
+                         {
+                             'name': self.ruleName, }}
 
+    def set(self, rule, ruletype):
+        field_selector = "metadata.name=={}".format('rule')
+        api_response = self.api_instance.list_namespaced_config_map(self.namespace, pretty='true',
+                                                                    field_selector=field_selector)
+        # 如果等于0那么需要先创建这个configmap在添加规则
+        if len(api_response.items) == 0:
+            try:
+                api_response = self.api_instance.create_namespaced_config_map(self.namespace, self.body, )
+                self.set(rule, ruletype)
+            except:
+                pass
+        else:
+            ##更新rule
+            oldrule = api_response.items[0].data
+            if oldrule != None:
+                newrule = json.loads(oldrule["rule"])
+                if ruletype not in json.loads(oldrule["rule"]).keys():
+                    newrule[ruletype] = []
+                newrule[ruletype].append(rule)
+            else:
+                newrule = {
+                    ruletype: [rule],
+                }
+            body = self.body
+            body["data"] = {'rule': json.dumps(newrule)}
+            api_response = self.api_instance.patch_namespaced_config_map(self.ruleName, self.namespace, body)
+
+    def delete(self):
+        pass
+
+    def get(self):
+        try:
+            field_selector = "metadata.name=={}".format(self.ruleName)
+            api_response = self.api_instance.list_namespaced_config_map(self.namespace, pretty='true',
+                                                                        field_selector=field_selector)
+            # 长度等于0表示没有这个模板
+            if len(api_response.items) == 0:
+                return None
+            return json.loads(api_response.items[0].data['rule'])
+        except ApiException as e:
+            logecho.info(e)
+            return None
+
+    def getList(self):
+        pass
+
+
+# configMap = configMap()
+Rule = Rule()
+Rule.set({"name": "aliyun", "template": "nginx"}, "containers")
+s = Rule.get()

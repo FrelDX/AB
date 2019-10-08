@@ -1,20 +1,18 @@
 # -*- coding: utf-8 -*-
 from flask_restful import Resource, reqparse, request
-from tools.configdb import configMap
+from tools.configdb import configMap, Rule
 from tools.log import logecho
-import json
 import base64
+import json
 
-dbMap = configMap
-
-
+Rule = Rule()
 class MutatingWebhookConfiguration(Resource):
     def __init__(self):
         super(MutatingWebhookConfiguration, self).__init__()
 
     def post(self):
         j_data = request.get_json()
-        process = pipline(j_data)
+        process = Pipline(j_data)
         path = process.toInto()
         if path != None:
             body = {
@@ -30,7 +28,7 @@ class MutatingWebhookConfiguration(Resource):
             return body
 
 
-class pipline():
+class Pipline():
     def __init__(self, body: json):
         self.body = body
         # 命名空间
@@ -43,7 +41,6 @@ class pipline():
             "volumes": {"op": "replace", "path": "/spec/template/spec/volumes", "value": None},
         }
         self.sourceBody = self.body["request"]["object"]["spec"]["template"]["spec"]["containers"]
-
     def getInto(self, templateName: str) -> dict:
         """
         :return:  获取注入的body
@@ -62,11 +59,7 @@ class pipline():
         """
         intoBody = []
         Body = {}
-        rule = {
-            "containers": [{"name": "caojiaoyue", "template": "nginx"}, {"name": "caojiaoyue1", "template": "tomcat"},
-                           {"namespace": "test", "template": "tomcat"}],
-            "volumes": [{"name": "caojiaoyue", "template": "tomcat"}],
-        }
+        rule = Rule.get()
         logecho.info(self.namespace)
         logecho.info(self.name)
         ###先判断容器注入
