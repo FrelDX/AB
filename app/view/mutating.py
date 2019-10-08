@@ -48,6 +48,7 @@ class Pipline():
         logecho.info(template)
         if templateName in template.keys():
             return template[templateName]
+
         return None
 
     def filtration(self) -> dict:
