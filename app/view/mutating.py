@@ -102,6 +102,7 @@ class pipline():
                     into.append(i)
                 containersPath = self.intoPath["containers"]
                 containersPath["value"] = into
+                logecho.info(containersPath)
                 jsonpath.append(containersPath)
                 logecho.info(jsonpath)
         logecho.info(into)
