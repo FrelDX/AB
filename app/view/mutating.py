@@ -78,6 +78,7 @@ class pipline():
                 intoBody.append(template)
                 Body["containers"] = intoBody
                 break
+        logecho.info(Body)
         return Body
     def toInto(self):
         """
@@ -101,6 +102,7 @@ class pipline():
                 containersPath = self.intoPath["containers"]
                 containersPath["value"] = into
                 jsonpath = [].append(containersPath)
+                logecho.info(jsonpath)
         logecho.info(into)
         logecho.info(jsonpath)
         jsonpath = json.dumps(jsonpath)
