@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask_restful import Resource, reqparse, request
-from tools.configdb import configMap, Rule
+from tools.configdb import configMap, Rule, intoTemplate
 from tools.log import logecho
 import base64
 import json
@@ -43,10 +43,7 @@ class Pipline():
         """
         :return:  获取注入的body
         """
-        template = {
-            "nginx": {'name': 'nginx', 'image': 'nginx', 'imagePullPolicy': 'Always'},
-            "tomcat": {'name': 'tomcat', 'image': 'tomcat', 'imagePullPolicy': 'Always'}
-        }
+        template = intoTemplate.get()
         if templateName in template.keys():
             return template[templateName]
         return None
