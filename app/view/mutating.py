@@ -57,6 +57,8 @@ class Pipline():
         intoBody = []
         Body = {}
         rule = Rule.get()
+        logecho.info("注入规则")
+        logecho.info(rule)
         logecho.info(self.namespace)
         logecho.info(self.name)
         ###先判断容器注入
