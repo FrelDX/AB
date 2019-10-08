@@ -43,11 +43,11 @@ class Pipline():
         """
         :return:  获取注入的body
         """
-        template = intoTemplate.get()
+        s = intoTemplate.get()
         logecho.info("注入的模板")
-        logecho.info(template)
-        if templateName in template.keys():
-            return template[templateName]
+        logecho.info(s)
+        if templateName in s.keys():
+            return s[templateName]
         return None
 
     def filtration(self) -> dict:
