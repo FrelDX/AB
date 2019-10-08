@@ -86,6 +86,7 @@ class pipline():
         """
         # 需要注入的containers
         into = []
+        jsonpath = []
         try:
             needInto = self.filtration()
             if needInto == None:
@@ -101,7 +102,7 @@ class pipline():
                     into.append(i)
                 containersPath = self.intoPath["containers"]
                 containersPath["value"] = into
-                jsonpath = [].append(containersPath)
+                jsonpath.append(containersPath)
                 logecho.info(jsonpath)
         logecho.info(into)
         logecho.info(jsonpath)
