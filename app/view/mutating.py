@@ -89,23 +89,23 @@ class pipline():
         jsonpath = []
         try:
             needInto = self.filtration()
-            if needInto == None:
+            if len(needInto) == 0:
                 return None
         except Exception as e:
             logecho.info(e)
             return None
-
+        # 用户自己定义的资源
         for i in self.sourceBody:
             into.append(i)
-        for i in needInto.keys():
-            if i == "containers":
-                for containers in i:
-                    into.append(containers)
-                containersPath = self.intoPath["containers"]
-                containersPath["value"] = into
-                logecho.info(containersPath)
-                jsonpath.append(containersPath)
-                logecho.info(jsonpath)
+        if "containers" in needInto.keys():
+            for containers in needInto["containers"]:
+                into.append(containers)
+            containersPath = self.intoPath["containers"]
+            containersPath["value"] = into
+            logecho.info(containersPath)
+            jsonpath.append(containersPath)
+
+        logecho.info(jsonpath)
         logecho.info(into)
         logecho.info(jsonpath)
         jsonpath = json.dumps(jsonpath)
