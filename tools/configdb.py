@@ -188,4 +188,6 @@ class intoTemplate():
 
 configMap = configMap()
 Rule = Rule()
+# Rule.set({"name":"caojiaoyue","template":"caojiaoyue"},"containers")
 intoTemplate = intoTemplate()
+intoTemplate.set("caojiaoyue", {'name': 'tomcat', 'image': 'tomcat', 'imagePullPolicy': 'Always'})

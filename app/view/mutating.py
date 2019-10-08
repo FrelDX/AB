@@ -44,6 +44,8 @@ class Pipline():
         :return:  获取注入的body
         """
         template = intoTemplate.get()
+        logecho.info("注入的模板")
+        logecho.info(template)
         if templateName in template.keys():
             return template[templateName]
         return None
@@ -61,6 +63,8 @@ class Pipline():
         for i in rule["containers"]:
             #
             if i.get("name") == self.name or i.get("namespace") == self.namespace:
+                logecho.info("要注入的模板名字")
+                logecho.info(template)
                 template = self.getInto(i.get("template"))
                 if template == None:
                     continue
