@@ -43,11 +43,11 @@ class Pipline():
         """
         :return:  获取注入的body
         """
-        s = intoTemplate.get()
+        template = intoTemplate.get()
         logecho.info("注入的模板")
-        logecho.info(s)
-        if templateName in s.keys():
-            return s[templateName]
+        logecho.info(template)
+        if templateName in template.keys():
+            return template[templateName]
         return None
 
     def filtration(self) -> dict:
@@ -66,8 +66,8 @@ class Pipline():
             #
             if i.get("name") == self.name or i.get("namespace") == self.namespace:
                 logecho.info("要注入的模板名字")
-                logecho.info(template)
                 template = self.getInto(i.get("template"))
+                logecho.info(template)
                 if template == None:
                     continue
                 intoBody.append(template)
