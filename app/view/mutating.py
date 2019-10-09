@@ -26,6 +26,21 @@ class MutatingWebhookConfiguration(Resource):
             return body
 
 
+class IntoRule():
+    def __init__(self):
+        super(IntoRule, self).__init__()
+
+    def post(self):
+        data = request.get_json()
+        logecho.info(data)
+
+
+class IntoTemplate():
+    def __init__(self):
+        super(IntoRule, self).__init__()
+
+    def post(self):
+        pass
 class Pipline():
     def __init__(self, body: json):
         self.body = body

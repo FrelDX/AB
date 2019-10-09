@@ -149,7 +149,7 @@ class intoTemplate():
         if len(api_response.items) == 0:
             try:
                 api_response = self.api_instance.create_namespaced_config_map(self.namespace, self.body, )
-                self.set(name)
+                self.set(name, body)
             except:
                 pass
         else:
@@ -188,6 +188,6 @@ class intoTemplate():
 
 configMap = configMap()
 Rule = Rule()
-# Rule.set({"name":"caojiaoyue","template":"caojiaoyue"},"containers")
+Rule.set({"namespace": "test", "template": "nginx"}, "containers")
 intoTemplate = intoTemplate()
-intoTemplate.set("caojiaoyue", {'name': 'tomcat', 'image': 'tomcat', 'imagePullPolicy': 'Always'})
+intoTemplate.set("nginx", {'name': 'tomcat', 'image': 'tomcat', 'imagePullPolicy': 'Always'})
