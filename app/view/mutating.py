@@ -31,10 +31,10 @@ class IntoRule(Resource):
         super(IntoRule, self).__init__()
 
     def post(self):
-        data = request.get_json()
-        logecho.info(data)
-
-
+        type = request.form.get("type")
+        rule = request.form.get("rule")
+        logecho.info(type)
+        logecho.info(rule)
 class IntoTemplate():
     def __init__(self):
         super(IntoRule, self).__init__()
