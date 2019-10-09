@@ -5,7 +5,7 @@ from app.view.template import templateCreate
 from app.view.template import templateDelete
 from app.view.template import templateGet
 from app.view.template_api import templateApi
-from app.view.mutating import IntoRule
+from app.view.mutating import IntoRule, IntoTemplate
 from flask import Flask, jsonify
 from flasgger import Swagger
 from app.view.mutating import MutatingWebhookConfiguration
@@ -23,4 +23,5 @@ def makeUrl():
     api.add_resource(templateApi, '/ab/template/api/<name>/<operaton>')
     api.add_resource(MutatingWebhookConfiguration, '/ab/webhook')
     api.add_resource(IntoRule, '/ab/intorule')
+    api.add_resource(IntoTemplate, '/ab/Intotemplate')
 makeUrl()

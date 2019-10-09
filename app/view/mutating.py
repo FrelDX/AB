@@ -32,10 +32,6 @@ class IntoRule(Resource):
     def post(self):
         kind = request.form.get("type")
         rule = json.loads(request.form.get("rule"))
-        logecho.info(kind)
-        logecho.info(type(kind))
-        logecho.info(rule)
-        logecho.info(type(rule))
         if kind != None and rule != None:
             try:
                 Rule.set(rule, kind)
@@ -44,12 +40,22 @@ class IntoRule(Resource):
                 logecho.info(e)
                 return {'code': '1', 'msg': '添加注入规则报错'}
         return {'code': '1', 'msg': '参数缺失'}
-class IntoTemplate():
+
+
+class IntoTemplate(Resource):
     def __init__(self):
         super(IntoRule, self).__init__()
-
     def post(self):
-        pass
+        name = request.form.get("name")
+        template = json.loads(request.form.get("template"))
+        if name != None and template != None:
+            try:
+                intoTemplate.set(name, template)
+                return {'code': '0', 'msg': 'Null'}
+            except Exception as  e:
+                logecho.info(e)
+                return {'code': '1', 'msg': '添加模板错误'}
+        return {'code': '1', 'msg': '参数缺失'}
 class Pipline():
     def __init__(self, body: json):
         self.body = body
