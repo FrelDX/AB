@@ -26,7 +26,7 @@ class MutatingWebhookConfiguration(Resource):
             return body
 
 
-class IntoRule():
+class IntoRule(Resource):
     def __init__(self):
         super(IntoRule, self).__init__()
 
