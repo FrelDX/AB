@@ -36,9 +36,9 @@ class IntoRule(Resource):
         logecho.info(type(kind))
         logecho.info(rule)
         logecho.info(type(rule))
-        if type != None and rule != None:
+        if kind != None and rule != None:
             try:
-                Rule.set(rule, type)
+                Rule.set(rule, kind)
                 return {'code': '0', 'msg': 'Null'}
             except Exception as  e:
                 logecho.info(e)
