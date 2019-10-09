@@ -188,6 +188,6 @@ class intoTemplate():
 
 configMap = configMap()
 Rule = Rule()
-Rule.set({"namespace": "test", "template": "nginx"}, "containers")
+# Rule.set({"namespace": "test", "template": "nginx"}, "containers")
 intoTemplate = intoTemplate()
-intoTemplate.set("nginx", {'name': 'tomcat', 'image': 'tomcat', 'imagePullPolicy': 'Always'})
+#intoTemplate.set("nginx", {'name': 'tomcat', 'image': 'tomcat', 'imagePullPolicy': 'Always'})

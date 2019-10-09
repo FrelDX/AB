@@ -2,8 +2,10 @@
 from flask_restful import Resource, reqparse, request
 from tools.configdb import configMap, Rule, intoTemplate
 from tools.log import logecho
+from tools.configdb import Rule, intoTemplate
 import base64
 import json
+
 class MutatingWebhookConfiguration(Resource):
     def __init__(self):
         super(MutatingWebhookConfiguration, self).__init__()
@@ -29,12 +31,17 @@ class MutatingWebhookConfiguration(Resource):
 class IntoRule(Resource):
     def __init__(self):
         super(IntoRule, self).__init__()
-
     def post(self):
         type = request.form.get("type")
         rule = request.form.get("rule")
-        logecho.info(type)
-        logecho.info(rule)
+        if type != None and rule != None:
+            try:
+                Rule.set(rule, type)
+                return {'code': '0', 'msg': 'Null'}
+            except Exception as  e:
+                logecho.info(e)
+                return {'code': '1', 'msg': '添加注入规则报错'}
+        return {'code': '1', 'msg': '参数缺失'}
 class IntoTemplate():
     def __init__(self):
         super(IntoRule, self).__init__()
