@@ -30,8 +30,12 @@ class IntoRule(Resource):
     def __init__(self):
         super(IntoRule, self).__init__()
     def post(self):
-        type = json.loads(request.form.get("type"))
-        rule = json.loads(request.form.get("rule"))
+        kind = request.form.get("type")
+        rule = request.form.get("rule")
+        logecho.info(kind)
+        logecho.info(type(kind))
+        logecho.info(rule)
+        logecho.info(type(rule))
         if type != None and rule != None:
             try:
                 Rule.set(rule, type)
