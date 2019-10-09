@@ -26,14 +26,12 @@ class MutatingWebhookConfiguration(Resource):
                     "patch": path
                 }}
             return body
-
-
 class IntoRule(Resource):
     def __init__(self):
         super(IntoRule, self).__init__()
     def post(self):
-        type = request.form.get("type")
-        rule = request.form.get("rule")
+        type = json.loads(request.form.get("type"))
+        rule = json.loads(request.form.get("rule"))
         if type != None and rule != None:
             try:
                 Rule.set(rule, type)
