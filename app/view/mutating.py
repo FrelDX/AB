@@ -44,7 +44,7 @@ class IntoRule(Resource):
 
 class IntoTemplate(Resource):
     def __init__(self):
-        super(IntoRule, self).__init__()
+        super(IntoTemplate, self).__init__()
     def post(self):
         name = request.form.get("name")
         template = json.loads(request.form.get("template"))

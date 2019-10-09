@@ -23,5 +23,5 @@ def makeUrl():
     api.add_resource(templateApi, '/ab/template/api/<name>/<operaton>')
     api.add_resource(MutatingWebhookConfiguration, '/ab/webhook')
     api.add_resource(IntoRule, '/ab/intorule')
-    api.add_resource(IntoTemplate, '/ab/Intotemplate')
+    api.add_resource(IntoTemplate, '/ab/intotemplate')
 makeUrl()
