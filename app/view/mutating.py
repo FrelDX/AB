@@ -31,7 +31,7 @@ class IntoRule(Resource):
         super(IntoRule, self).__init__()
     def post(self):
         kind = request.form.get("type")
-        rule = request.form.get("rule")
+        rule = json.loads(request.form.get("rule"))
         logecho.info(kind)
         logecho.info(type(kind))
         logecho.info(rule)
